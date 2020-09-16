@@ -1,0 +1,56 @@
+{extend name="../../../theme/default/base" /}
+
+{block name="css"}
+<link href="__PUBLIC__/Home/css/detailscolumns.css" type="text/css" rel="stylesheet" />
+
+<script src="__PUBLIC__/Home/js/detailscolumns.js"></script>
+{/block}
+{block name="content"}
+<!--主体内容-->
+<div class="f_content">
+    <?php if( isset($details['category']['one_category']) ){ ?>
+        <div class="p_crumbs">
+            <div class="m_crumbs">
+                <a href="#"><span class="icon_home_f"></span>{:$details['category']['one_category']}</a>
+                <?php if( isset($details['category']['two_category']) ){ ?>
+                    &gt;
+                    <span>{:$details['category']['two_category']}</span>
+                <?php } ?>
+            </div>
+        </div>
+    <?php } ?>
+    <div class="p_content">
+        <h1>{:$details['title']}</h1>
+        <p><span>时间：{:$details['date']}</span><span>【字体：<i class="bigsize">大</i> <i class="normalsize active">中</i> <i class="smallsize">小</i>】</span></p>
+        <i></i>
+        {if condition="$details['thumb'] != ''"}
+            <div class="img_box"><img src="{:$details['thumb']}"/></div>
+        {/if}
+        <div class="content_box">
+            {:$details['content']}
+        </div>
+        <div class="piece_box">
+            {if condition="$details['last_posts'] != null"}
+                <div class="prev_piece fl">
+                    <span><a href="{:leuu('Home/Index/details', array('id' => $details['last_posts']['id'], 'cid' => $details['cid']))}">上一篇</a></span>
+                    <p><a href="{:leuu('Home/Index/details', array('id' => $details['last_posts']['id'], 'cid' => $details['cid']))}">{:$details['last_posts']['post_title']}</a></p>
+                </div>
+            {/if}
+
+            {if condition="$details['next_posts'] != null"}
+                <div class="next_piece fr">
+                    <span><a href="{:leuu('Home/Index/details', array('id' => $details['next_posts']['id'], 'cid' => $details['cid']))}">下一篇</a></span>
+                    <p><a href="{:leuu('Home/Index/details', array('id' => $details['next_posts']['id'], 'cid' => $details['cid']))}">{:$details['next_posts']['post_title']}</a></p>
+                </div>
+            {/if}
+        </div>
+        <i></i>
+        <h4>相关文章</h4>
+        <ul>
+            {foreach name="details['related_posts']" item="vo"}
+                <li><a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}">{$vo.post_title}</a> <span>{$vo.post_date}</span></li>
+            {/foreach}
+        </ul>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,361 @@
+{extend name="default:base" /}
+
+
+{block name="content"}
+<!--主体内容-->
+<div class="f_content">
+    <div class="w">
+        <!--头部信息-->
+        <div class="row">
+            <div class="m_info">
+                <div class="ticker-1">
+                    <foreach name="scrollPosts" item="vo">
+                        <a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}">{$vo.post_title}</a>
+                    </foreach>
+                </div>
+            </div>
+        </div>
+        <!--头部信息结束-->
+        <div class="row">
+            <div class="col-8">
+                <!--轮播图-->
+                <div class="m_swiper">
+                    <div class="swiper-wrapper">
+                        <php>
+                            $home_slides=sp_getslide("home_banner");
+                        </php>
+                        <foreach name="home_slides" item="vo">
+                            <div class="swiper-slide">
+                                <a href="{$vo.slide_url}">
+                                    <img src="{:sp_get_asset_upload_path($vo['slide_pic'])}">
+                                    <div class="text-bg">
+                                        <p>{$vo.slide_name}</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </foreach>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+                <!--轮播图-->
+            </div>
+            <div class="col-4">
+                <!--通知公告-->
+                <div class="m_orderhelp">
+                    <div class="m_list">
+                        <div class="m_list_title">
+                            <p>通知公告</p>
+                            <a href="{:leuu('Home/Index/newList', array('id' => 25))}">更多&gt;</a>
+                        </div>
+                        <div class="m_list_order">
+                            <php>
+                                $posts = sp_sql_posts('cid:25;field:object_id,term_id,post_title,post_content;limit:0,8;order:post_modified DESC');
+                            </php>
+                            <ul>
+                                <foreach name="posts" item="vo">
+                                    <li><a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}"><span class="icon-radios"></span><span> {$vo.post_title }</span></a></li>
+                                </foreach>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--通知公告-->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-8">
+                <!--商会介绍，简介-->
+                <div class="m_brief_introduction">
+                    <div class="col-3">
+                        <div class="m_list">
+                            <div class="m_list_title">
+                                <p>商会介绍</p>
+                                <if condition="count($data) gt 6">
+                                    <a href="{:leuu('Home/Index/chamberList', array('id' => 26))}">更多&gt;</a>
+                                </if>
+                            </div>
+                            <div class="m_list_order">
+                                <ul>
+                                    <foreach name="data" item="vo">
+                                        <li><a href="{:leuu('Home/Index/details', array('id' => $vo['id'], 'cid' => $vo['term_id']))}"><span class="icon-radios"></span><span>{$vo.name}</span></a></li>
+                                    </foreach>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-9">
+                        <div class="m_list">
+                            <div class="m_list_title">
+                                <p>商会简介</p>
+                                <a href="{:leuu('Home/Index/details', array('id' => 17, 'cid' => 11))}">更多&gt;</a>
+                            </div>
+                            <!--pc端-->
+                            <div class="brief_intros brief_show">
+                                <php>
+                                    $id = 17;
+                                    $chamberIntroduction = sp_sql_post($id,'field:post_content,smeta;');
+                                    $IntroductionImg = json_decode($chamberIntroduction['smeta'], true);
+                                </php>
+                                <div class="col-img"><img src="{:sp_get_asset_upload_path($IntroductionImg['thumb'])}"></div>
+                                <php> echo mb_strlen(strip_tags($chamberIntroduction['post_content']),'utf-8') > 201 ? mb_substr(strip_tags($chamberIntroduction['post_content']),0,200,'utf-8').'...' : strip_tags($chamberIntroduction['post_content']);</php>
+                            </div>
+                            <!--pc端-->
+                            <!--m端-->
+                            <div class="brief_intros brief_mshow">
+                                <div class="col-img"><img src="{:sp_get_asset_upload_path($IntroductionImg['thumb'])}"></div>
+                                <php> echo mb_strlen(strip_tags($chamberIntroduction['post_content']),'utf-8') > 201 ? mb_substr(strip_tags($chamberIntroduction['post_content']),0,200,'utf-8').'...' : strip_tags($chamberIntroduction['post_content']);</php>
+                            </div>
+                            <!--m端-->
+                        </div>
+                    </div>
+                </div>
+                <!--商会介绍，简介-->
+            </div>
+            <div class="col-4">
+                <!--公益慈善互助投融-->
+                <div class="m_index_list">
+                    <div class="row_list">
+                        <div class="list_cont">
+                            <div class="tab_wrap" data-toggle="tab">
+                                <ul class="bm_tab_but">
+                                    <li class="active"><a href="javascript:void(0)"><span>公益慈善</span></a>
+                                    </li>
+                                    <li class=""><a href="javascript:void(0)"><span>互助投融</span></a>
+                                    </li>
+                                </ul>
+                                <div class="tab_content">
+                                    <div class="item active">
+                                        <php>
+                                            $charity = sp_sql_posts('cid:7;field:object_id,term_id,post_title,post_content;limit:0,7;order:post_modified DESC');
+                                        </php>
+                                        <ul>
+                                            <foreach name="charity" item="vo">
+                                                <li><a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}"><span class="icon-radios"></span>{$vo.post_title }</a></li>
+                                            </foreach>
+                                        </ul>
+                                    </div>
+                                    <div class="item">
+                                        <php>
+                                            $investment = sp_sql_posts('cid:8;field:object_id,term_id,post_title,post_content;limit:0,7;order:post_modified DESC');
+                                        </php>
+                                        <ul>
+                                            <foreach name="investment" item="vo">
+                                                <li><a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}"><span class="icon-radios"></span>{$vo.post_title }</a></li>
+                                            </foreach>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--公益慈善互助投融-->
+            </div>
+        </div>
+        <!--pc端-->
+        <div class="row">
+            <!--商会动态-->
+            <div class="col-5">
+                <div class="m_dynamic">
+                    <div class="m_list">
+                        <div class="m_list_title">
+                            <p>商会动态</p>
+                            <a href="{:leuu('Home/Index/newList', array('id' => 26))}">更多&gt;</a>
+                        </div>
+                        <div class="m_list_order">
+                            <php>
+                                $chamberCommerce = sp_sql_posts('cid:26;field:object_id,term_id,post_title,post_content,smeta;limit:0,4;order:post_modified DESC');
+                            </php>
+                            <ul>
+                                <foreach name="chamberCommerce" item="vo">
+                                    <li>
+                                        <php>
+                                            $chamberSmeta = json_decode($vo['smeta'],true);
+                                        </php>
+                                        <if condition="$chamberSmeta['thumb'] neq ''">
+                                            <a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}">
+                                                <img src="{:sp_get_asset_upload_path($chamberSmeta['thumb'])}">
+                                            </a>
+                                        </if>
+                                        <div class="dynamic_content">
+                                            <a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}">{$vo.post_title} </a>
+                                            <p>{:mb_strlen(strip_tags($vo['post_content']),'utf-8') > 47 ? mb_substr(strip_tags($vo['post_content']),0,46,'utf-8').'...' : strip_tags($vo['post_content'])}</p>
+                                        </div>
+                                    </li>
+                                </foreach>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--商会动态-->
+            <!--企业动态-->
+            <div class="col-5">
+                <div class="m_dynamic">
+                    <div class="m_list">
+                        <div class="m_list_title">
+                            <p>企业动态</p>
+                            <a href="{:leuu('Home/Index/newList', array('id' => 27))}">更多&gt;</a>
+                        </div>
+                        <div class="m_list_order">
+                            <php>
+                                $companyCommerce = sp_sql_posts('cid:27;field:object_id,term_id,post_title,post_content,smeta;limit:0,4;order:post_modified DESC');
+                            </php>
+                            <ul>
+                                <foreach name="companyCommerce" item="vo">
+                                    <li>
+                                        <php>
+                                            $commerceSmeta = json_decode($vo['smeta'],true);
+                                        </php>
+                                        <if condition="$commerceSmeta['thumb'] neq ''">
+                                            <a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}">
+                                                <img src="{:sp_get_asset_upload_path($commerceSmeta['thumb'])}">
+                                            </a>
+                                        </if>
+                                        <div class="dynamic_content">
+                                            <a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}">{$vo.post_title} </a>
+                                            <p>{:mb_strlen(strip_tags($vo['post_content']),'utf-8') > 47 ? mb_substr(strip_tags($vo['post_content']),0,46,'utf-8').'...' : strip_tags($vo['post_content'])}</p>
+                                        </div>
+                                    </li>
+                                </foreach>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--企业动态-->
+        </div>
+        <!--pc端-->
+
+        <!--m端-->
+        <div class="row">
+            <div class="m_mdynamic">
+                <div class="row_list">
+                    <div class="list_cont">
+                        <div class="tab_wrap" data-toggle="tab">
+                            <ul class="bm_tab_but">
+                                <li class="active"><a href="javascript:void(0)"><span>商会动态</span></a></li>
+                                <li class=""><a href="javascript:void(0)"><span>企业动态</span></a></li>
+                            </ul>
+                            <div class="tab_content">
+                                <div class="item active">
+                                    <ul>
+                                        <foreach name="chamberCommerce" item="vo">
+                                            <li>
+                                                <php>
+                                                    $chamberSmeta = json_decode($vo['smeta'],true);
+                                                </php>
+                                                <if condition="$chamberSmeta['thumb'] neq ''">
+                                                    <a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}"><img src="{:sp_get_asset_upload_path($chamberSmeta['thumb'])}"></a>
+                                                </if>
+                                                <div class="dynamic_content">
+                                                    <a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}">{$vo.post_title} </a>
+                                                    <p>{:mb_strlen(strip_tags($vo['post_content']),'utf-8') > 47 ? mb_substr(strip_tags($vo['post_content']),0,46,'utf-8').'...' : strip_tags($vo['post_content'])}</p>
+                                                </div>
+                                            </li>
+                                        </foreach>
+                                    </ul>
+                                </div>
+                                <div class="item">
+                                    <ul>
+                                        <foreach name="companyCommerce" item="vo">
+                                            <li>
+                                                <php>
+                                                    $commerceSmeta = json_decode($vo['smeta'],true);
+                                                </php>
+                                                <if condition="$commerceSmeta['thumb'] neq ''">
+                                                    <a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}"><img src="{:sp_get_asset_upload_path($commerceSmeta['thumb'])}"></a>
+                                                </if>
+                                                <div class="dynamic_content">
+                                                    <a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}">{$vo.post_title} </a>
+                                                    <p>{:mb_strlen(strip_tags($vo['post_content']),'utf-8') > 47 ? mb_substr(strip_tags($vo['post_content']),0,46,'utf-8').'...' : strip_tags($vo['post_content'])}</p>
+                                                </div>
+                                            </li>
+                                        </foreach>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--m端-->
+
+        <!--商会领导pc端-->
+        <div class="row">
+            <div class="m_leader">
+                <div class="m_list">
+                    <div class="m_list_title">
+                        <p>商会领导</p>
+                    </div>
+                    <php>
+                        $chamberImg = sp_getslide("chamber_leader");
+                    </php>
+                    <!--PC端-->
+                    <div class="picMarquee-left" id="leaders">
+                        <div class="bd">
+                            <ul class="picList">
+                                <foreach name="chamberImg" item="vo">
+                                    <li>
+                                        <div class="pic"><img src="{:sp_get_asset_upload_path($vo['slide_pic'])}" /></div>
+                                        <div class="title">{$vo.slide_name}</div>
+                                    </li>
+                                </foreach>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--PC端-->
+                    <!--m端-->
+                    <div class="swiper-containers">
+                        <div class="swiper-wrapper">
+                            <foreach name="chamberImg" item="vo">
+                                <div class="swiper-slide"><img src="{:sp_get_asset_upload_path($vo['slide_pic'])}" />{$vo.slide_name}</div>
+                            </foreach>
+                        </div>
+                    </div>
+                    <!--m端-->
+                </div>
+            </div>
+        </div>
+        <!--商会领导PC端-->
+
+        <!--友情链接-->
+        <div class="row clearfix">
+            <div class="m_links">
+                <div class="m_list">
+                    <div class="m_list_title">
+                        <p>会员单位网页链接</p>
+                    </div>
+                    <php>
+                        $links = sp_getlinks();
+                    </php>
+
+                    <!--pc端-->
+                    <div class="picMarquee-left" id="friendlink">
+                        <div class="bd">
+                            <ul class="picList">
+                                <foreach name="links" item="vo">
+                                    <li><div class="pic"><a href="#" target="_blank"><img src="{:sp_get_image_url($vo['link_image'])}" /></a></div></li>
+                                </foreach>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--pc端-->
+                    <!--m端-->
+                    <div class="swiper-containers">
+                        <div class="swiper-wrapper">
+                            <foreach name="links" item="vo">
+                                <div class="swiper-slide"><a href="#" target="_blank"><img src="{:sp_get_image_url($vo['link_image'])}" /></a></div>
+                            </foreach>
+                        </div>
+                    </div>
+                    <!--m端-->
+                </div>
+            </div>
+        </div>
+        <!--友情链接-->
+    </div>
+</div>
+{/block}

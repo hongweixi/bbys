@@ -1,0 +1,198 @@
+<!-- 模板继承 -->
+{extend name="public:base" /}
+
+<!-- 页面标题 -->
+{block name="title"}Administrator{/block}
+
+<!-- 自定义css -->
+{block name="css"}{/block}
+
+<!-- 内容区域 -->
+{block name="content"}
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+      <li class=""><a href="{:url('admin/slider/index')}">{:lang('Slider')}</a></li>
+      <li class="active"><a href="">{:lang('Create')}</a></li>
+      <li class=""><a href="{:url('admin/slider/category')}">{:lang('Category')}</a></li>
+      <li class="pull-right"><a href="javascript:history.back(-1);" class="text-muted"><i class="fa fa-chevron-circle-left"></i></a></li>
+    </ul>
+      <div class="tab-content">
+          <div class="tab-pane active">
+              <form role="form" id="operate">
+                  <div class="row">
+                      <div class="col-md-6">
+                          <div class="box box-solid no-border">
+
+                              <!-- /.box-header -->
+                              <div class="box-body">
+                                  <div class="form-group control-group">
+                                      <label class="control-label">分类:</label>
+                                      <div class="controls">
+                                          <select name="slide_cid"  class="form-control input-sm">
+                                              <option value="0">默认分类</option>
+                                              {foreach name="categorys" item="vo"}
+                                              <option value="{$vo.cid}">{$vo.cat_name}</option>
+                                              {/foreach}
+                                          </select>
+                                      </div>
+                                  </div>
+
+
+                                  <div class="form-group control-group">
+                                      <label class="control-label">{:lang('TITLE')}<span class="text-red">*</span></label>
+                                      <div class="controls">
+                                          <input type="text" class="form-control input-sm" name="slide_name" required placeholder="请输入幻灯片名称" value="">
+                                      </div>
+                                  </div>
+                                  <div class="form-group control-group">
+                                      <label class="control-label">链接</label>
+                                      <div class="controls">
+                                          <input type="text" class="form-control input-sm" name="slide_url" value="">
+                                      </div>
+                                  </div>
+                                  <div class="form-group control-group">
+                                      <label class="control-label">{:lang('DESCRIPTION')}</label>
+                                      <div class="controls">
+                                          <input type="text" class="form-control input-sm" name="slide_des" value="">
+                                      </div>
+                                  </div>
+                                  <div class="form-group control-group">
+                                      <label class="control-label">幻灯片内容</label>
+                                      <div class="controls">
+                                          <textarea name="slide_content" class="form-control input-sm"></textarea>
+                                      </div>
+                                  </div>
+
+                                  <!-- /.box-body -->
+                              </div>
+
+                          </div>
+                      </div>
+
+                      <div class="col-md-6">
+                          <div class="box box-solid no-border">
+
+                              <!-- /.box-header -->
+                              <div class="box-body">
+
+                                  <div class="form-group">
+                                      <label>缩略图</label>
+                                      <div class="row">
+                                          <div class="col-md-12">
+                                              <div class="layui-upload-drag" id="image">
+                                                  <input type="hidden" name="slide_pic" id="smeta_input">
+                                                  <div class="layui-upload-list" id="preview">
+                                                      <p>{:lang('Upload')}</p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <p class="help-block"></p>
+                                  </div>
+                                  <div class="form-group">
+                                      <div class="row">
+                                          <div class="col-md-12">
+                                              <button class="btn btn-primary btn-flat" onclick="cancelImg();"> 取消图片</button>
+                                          </div>
+                                      </div>
+                                  </div>
+
+
+                                  <!-- /.box-body -->
+                              </div>
+
+
+
+
+                          </div>
+                      </div>
+                  </div>
+              </form>
+          </div>
+          <!-- /.tab-pane -->
+      </div>
+    <!-- /.tab-content -->
+    <div class="box-footer">
+        <div class="btn-group">
+            <button class="btn btn-primary btn-flat" onclick="operate();" type="button"> {:lang('Save')}</button>
+        </div>
+    </div>
+  </div>
+{/block}
+
+<!-- 自定义js -->
+{block name="js"}
+<script>
+layui.use('upload', function(){
+  var $ = layui.jquery
+  ,upload = layui.upload;
+  //拖拽上传
+  upload.render({
+    elem: "#image"
+    ,accept: 'image'
+    ,multiple: false
+    ,number: 1
+    ,url: "{:url('admin/upload/uploadFile')}"
+    ,done: function(res){
+      if (res.code == 200) {
+          $("#smeta_input").val(res.data.url);
+        $("[name='image']").val(res.data.url);
+        $("#preview").html("<img class=\'layui-upload-img img-responsive\' src=\'"+res.data.url+"\'>");
+      } else {
+        swal({
+          position: 'center',
+          type: 'error',
+          title: res.msg,
+          showConfirmButton: false,
+          toast:false,
+          timer: 2000
+        });
+      }
+    }
+  });
+  
+});
+</script>
+<script type="text/javascript">
+    function operate(){
+        $.ajax({
+            url:"{:url('admin/slider/create')}",
+            data:$("#operate").serialize(),
+            type:'post',
+            dataType:'json',
+            success:function(xhr){
+                if(xhr.code == 200){
+                    swal({
+                      position: 'center',
+                      type: 'success',
+                      title: xhr.msg,
+                      showConfirmButton: false,
+                      toast:false,
+                      timer: 2000
+                    });
+                } else{
+                    swal({
+                      position: 'center',
+                      type: 'error',
+                      title: xhr.msg,
+                      showConfirmButton: false,
+                      toast:false,
+                      timer: 2000
+                    });
+                }
+            }
+        });
+    }
+
+    function cancelImg(){
+
+        $("#smeta_input").val('');
+        $("#preview").html("<p>UPLOAD</p>");
+
+        event.preventDefault();
+        return false;
+    }
+
+</script>
+{/block}

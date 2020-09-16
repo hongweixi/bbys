@@ -1,0 +1,182 @@
+<!-- 模板继承 -->
+{extend name="public:base" /}
+
+<!-- 页面标题 -->
+{block name="title"}Administrator{/block}
+
+<!-- 自定义css -->
+{block name="css"}{/block}
+
+<!-- 内容区域 -->
+{block name="content"}
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class=""><a href="{:url('admin/link/index')}">{:lang('Link')}</a></li>
+        <li class=""><a href="{:url('admin/link/create')}">{:lang('Create')}</a></li>
+        <li class="pull-right"><a href="javascript:history.back(-1);" class="text-muted"><i class="fa fa-chevron-circle-left"></i></a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active">
+            <form role="form" id="operate">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="box box-solid no-border">
+
+                            <!-- /.box-header -->
+                            <div class="box-body">
+
+
+                                <div class="form-group control-group">
+                                    <label class="control-label">{:lang('NAME')}<span class="text-red">*</span></label>
+                                    <div class="controls">
+                                        <input type="hidden" name="link_id" value="{$link_id}">
+                                        <input type="text" class="form-control input-sm" name="link_name" required value="{$link_name}">
+                                    </div>
+                                </div>
+                                <div class="form-group control-group">
+                                    <label class="control-label">{:lang('LINK_ADDRESS')}<span class="text-red">*</span></label>
+                                    <div class="controls">
+                                        <input type="text" class="form-control input-sm" name="link_url" required value="{$link_url}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>{:lang('LINK_ICON')}</label>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="layui-upload-drag" id="logo">
+                                                <input type="hidden" name="link_image" id="smeta_input" value="{$link_image}">
+                                                <div class="layui-upload-list" id="preview">
+                                                    {if condition="empty($link_image)"}
+                                                    <p>{:lang('Upload')}</p>
+                                                    {else /}
+                                                    <img class='layui-upload-img img-responsive' src='{:sp_get_image_preview_url($link_image)}'>
+                                                    {/if}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <p class="help-block"></p>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button class="btn btn-primary btn-flat" onclick="cancelImg();"> 取消图片</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group control-group">
+                                    <label class="control-label">{:lang('LINK_TARGET')}</label>
+                                    <div class="controls">
+                                        <select name="link_target"  class="form-control input-sm">
+                                            {foreach name="targets" item="vo"}
+                                            {php}$link_target_selected=$link_target==$key?"selected='selected'":"";{/php}
+                                            <option value="{$key}" {$link_target_selected}>{$vo}</option>
+                                            {/foreach}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group control-group">
+                                    <label class="control-label">{:lang('LINK_DESCRIPTION')}</label>
+                                    <div class="controls">
+                                        <textarea name="link_description" class="form-control input-sm">{$link_description}</textarea>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- /.box-body -->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- /.tab-pane -->
+    </div>
+    <!-- /.tab-content -->
+    <div class="box-footer">
+        <div class="btn-group">
+            <button class="btn btn-primary btn-flat" onclick="operate();" type="button"> {:lang('Save')}</button>
+        </div>
+    </div>
+</div>
+{/block}
+
+<!-- 自定义js -->
+{block name="js"}
+<script>
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload;
+        //拖拽上传
+        upload.render({
+            elem: "#logo"
+            ,accept: 'image'
+            ,multiple: false
+            ,number: 1
+            ,url: "{:url('admin/upload/uploadFile')}"
+            ,done: function(res){
+                if (res.code == 200) {
+                    $("#smeta_input").val(res.data.url);
+                    $("[name='logo']").val(res.data.url);
+                    $("#preview").html("<img class=\'layui-upload-img img-responsive\' src=\'"+res.data.url+"\'>");
+                } else {
+                    swal({
+                        position: 'center',
+                        type: 'error',
+                        title: res.msg,
+                        showConfirmButton: false,
+                        toast:false,
+                        timer: 2000
+                    });
+                }
+            }
+        });
+
+    });
+</script>
+<script type="text/javascript">
+    function operate(){
+        $.ajax({
+            url:"{:url('admin/link/edit')}",
+            data:$("#operate").serialize(),
+            type:'post',
+            dataType:'json',
+            success:function(xhr){
+                if(xhr.code == 200){
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: xhr.msg,
+                        showConfirmButton: false,
+                        toast:false,
+                        timer: 2000
+                    });
+                } else{
+                    swal({
+                        position: 'center',
+                        type: 'error',
+                        title: xhr.msg,
+                        showConfirmButton: false,
+                        toast:false,
+                        timer: 2000
+                    });
+                }
+            }
+        });
+    }
+
+    function cancelImg(){
+
+        $("#smeta_input").val('');
+        $("#preview").html("<p>UPLOAD</p>");
+
+        event.preventDefault();
+        return false;
+    }
+
+</script>
+{/block}

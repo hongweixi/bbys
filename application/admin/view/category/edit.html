@@ -1,0 +1,157 @@
+<!-- 模板继承 -->
+{extend name="public:base" /}
+
+<!-- 页面标题 -->
+{block name="title"}Administrator{/block}
+
+<!-- 自定义css -->
+{block name="css"}{/block}
+
+<!-- 内容区域 -->
+{block name="content"}
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+      <li class=""><a href="{:url('admin/category/index')}">{:lang('Category')}</a></li>
+      <li class=""><a href="{:url('admin/category/create')}">{:lang('Create')}</a></li>
+      <li class="pull-right"><a href="javascript:history.back(-1);" class="text-muted"><i class="fa fa-chevron-circle-left"></i></a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active">
+        <form role="form" id="operate">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-solid no-border">
+
+                        <!-- /.box-header -->
+                        <div class="box-body">
+
+                            <div class="form-group">
+                                <label>{:lang('NAVIGATION_CATEGORY')} </label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select name="cid" class="form-control input-sm">
+                                            {volist name="navcats" id="vo"}
+                                            <option value="{$vo.navcid}">{$vo.name}</option>
+                                            {/volist}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>{:lang('PARENT')} </label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select name="parentid" class="form-control input-sm">
+                                            <option value="0">/</option>
+                                            {$nav_trees}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>{:lang('LABEL')} <span class="text-red">*</span></label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="text" name="label" value="{$label}" required class="form-control input-sm">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>{:lang('HREF')} </label>
+                                <div class="row">
+                                    <div class="col-md-12 radio" style="margin-left: 20px;">
+                                        <input type="radio" name="nav" id="outlink_radio">
+                                        <input type="text" name="href" id="outlink_input" value="http://" class="form-control input-sm">
+                                        <input type="radio" name="nav" id="selecturl_radio">
+                                        <select name="href" class="form-control input-sm">
+                                            <option value="{:base64_encode('home')}">{:lang('HOME')}</option>
+                                            {foreach name="navs" item="vo"}
+                                            <optgroup label="{$vo.name}">
+                                                {$vo.html}
+                                            </optgroup>
+                                            {/foreach}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>{:lang('TARGET')} </label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select name="target" class="form-control input-sm">
+                                            <option value="">{:lang('TARGET_DEFAULT')}</option>
+                                            <option value="_blank">{:lang('TARGET_BLANK')}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>{:lang('STATUS')} </label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select name="status" class="form-control input-sm">
+                                            <option value="1">{:lang('DISPLAY')}</option>
+                                            <option value="0">{:lang('HIDDEN')}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <input type="hidden" name="id" value="{$id}">
+                            <!-- /.box-body -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+      </div>
+      <!-- /.tab-pane -->
+    </div>
+    <!-- /.tab-content -->
+    <div class="box-footer">
+        <div class="btn-group">
+            <button class="btn btn-primary btn-flat" onclick="operate();" type="submit"> {:lang('Save')}</button>
+        </div>
+    </div>
+  </div>
+{/block}
+
+<!-- 自定义js -->
+{block name="js"}
+<script type="text/javascript">
+    function operate(){
+        $.ajax({
+            url:"{:url('admin/category/edit')}",
+            data:$("#operate").serialize(),
+            type:'post',
+            dataType:'json',
+            success:function(xhr){
+                if(xhr.code == 200){
+                    swal({
+                      position: 'center',
+                      type: 'success',
+                      title: xhr.msg,
+                      showConfirmButton: false,
+                      toast:false,
+                      timer: 2000
+                    });
+                } else{
+                    swal({
+                      position: 'center',
+                      type: 'error',
+                      title: xhr.msg,
+                      showConfirmButton: false,
+                      toast:false,
+                      timer: 2000
+                    });
+                }
+            }
+        });
+    }
+
+</script>
+{/block}

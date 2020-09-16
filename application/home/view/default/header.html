@@ -1,0 +1,75 @@
+<div class="f_header w1">
+    <header class="m_head">
+        <div class="mask_layer"></div>
+        <div class="row_head">
+            <!--移动端搜索-->
+            <!--<div class="m_head_right_div search" data-action="">
+                <span class="icon_cross fl"></span>
+                <form method="post" class="form-inline" action="{:url('Home/index/search')}">
+                    <input type="text" name="keyword" class="fl keyword" placeholder="搜索">
+                    <button class="icon_search fl pc_search submit"></button>
+                </form>
+            </div>-->
+            <!--移动端搜索 end-->
+            <!--移动端导航-->
+            <div class="m_head_left_ul">
+                <p><span class="icon_cross fr"></span></p>
+                {php}
+                    $mobileNav = sp_get_terms('where:parent=0;order:listorder desc');
+                {/php}
+                <ul>
+                    <a href="{:url('Home/index/index')}"> <li>首页</li></a>
+                    {foreach name="mobileNav" item="vo"}
+                        <if condition="$vo['term_id'] == 1">
+                            <a href="{:leuu('Home/Index/chamberList', array('id' => 26))}"><li>{$vo.name}</li></a>
+                            <else />
+                            <a href="{:leuu('Home/Index/newList', array('id' => $vo['term_id']))}"><li>{$vo.name}</li></a>
+                        </if>
+                    {/foreach}
+                </ul>
+            </div>
+
+            <!--移动端导航 end-->
+            <!-- pc端顶部 -->
+            <div class="head_logo fl">
+                <span class="icon_sidebar fl m_head_left hide"></span>
+                <div>
+                    <a href="{:url('Home/index/index')}"><img src="__PUBLIC__/Home/images/sh-logo.jpg"></a>
+                </div>
+                <span class="icon_search fr m_head_right hide"></span>
+            </div>
+            <div class="head_logo_right fr">
+                <img src="__PUBLIC__/Home/images/title.jpg" alt="">
+            </div>
+            <!-- pc端顶部 end-->
+            <!-- PC端nav -->
+            <div class="head_nav">
+                <?php
+                    $effected_id="";
+                    $filetpl="<a href='\$href'>\$label</a>";
+                $foldertpl="<a href='\$href'>\$label <i class=''></i></a>";
+                $ul_class="" ;
+                $li_class="" ;
+                $menu_root_ul_class="fl" ;
+                $style="";
+                $showlevel=7;
+                $dropdown='';
+                echo sp_get_menu("main",$effected_id,$filetpl,$foldertpl,$ul_class,$li_class,$menu_root_ul_class,$style,$showlevel,$dropdown);
+                ?>
+                <div class="search_par fr" id="search_par"><span class="icon_search" id="search_icon"></span> </div>
+                <div class="searchBox" id="searchBox">
+                    <i>
+                        <img src="__PUBLIC__/Home/images/images/icon-top.jpg" alt="">
+                    </i>
+                    <div>
+                        <form method="post" class="form-inline" action="{:url('Home/index/search')}">
+                            <input type="text" name="keyword" id="search_btn" value=""/>
+                            <button class="searchBtn" id="search">搜索</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- PC端nav end-->
+        </div>
+    </header>
+</div>

@@ -1,0 +1,323 @@
+<!-- 模板继承 -->
+{extend name="public:base" /}
+
+<!-- 页面标题 -->
+{block name="title"}Administrator{/block}
+
+<!-- 自定义css -->
+{block name="css"}
+
+
+{/block}
+
+<!-- 内容区域 -->
+{block name="content"}
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+      <li class=""><a href="{:url('admin/document/index')}">{:lang('Document')}</a></li>
+      <li class=""><a href="{:url('admin/document/create')}">{:lang('Create')}</a></li>
+      <li class="pull-right"><a href="javascript:history.back(-1);" class="text-muted"><i class="fa fa-chevron-circle-left"></i></a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active">
+        <form role="form" id="operate">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-solid no-border">
+
+                        <!-- /.box-header -->
+                        <div class="box-body">
+
+                            <div class="form-group">
+                                <label>分类 </label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select multiple="multiple" style="max-height: 100px;" name="term[]">{$taxonomys}</select>
+
+                                    </div>
+                                </div>
+                                <p class="help-block">windows：按住 Ctrl 按钮来选择多个选项,Mac：按住 command 按钮来选择多个选项</p>
+                            </div>
+                            <div class="form-group">
+                                <label>标题 </label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="text" name="post[post_title]" value="{$post.post_title}" required class="form-control input-sm" placeholder="请输入标题">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>关键词 </label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="text" name="post[post_keywords]" value="{$post['post_keywords']}" required class="form-control input-sm" placeholder="请输入关键字">
+
+                                    </div>
+                                </div>
+                                <p class="help-block">多关键词之间用空格或者英文逗号隔开</p>
+                            </div>
+                            <div class="form-group">
+                                <label>文章来源 </label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="text" name="post[post_source]" value="{$post['post_source']}" required class="form-control input-sm" placeholder="请输入文章来源">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>摘要 </label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <textarea class="form-control input-sm" name="post[post_excerpt]" rows="3" placeholder="请填写摘要">{$post['post_excerpt']}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>发布时间 </label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="text" name="post[post_date]" value="{$post.post_date}"  required class="form-control input-sm" id="date" placeholder="请输入文章来源">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="box box-solid no-border">
+
+                        <!-- /.box-header -->
+                        <div class="box-body">
+
+                            <div class="nav-tabs-custom nav-tabs-custom-tab">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tab_1" data-toggle="tab">本地上传</a></li>
+                                    <li><a href="#tab_2" data-toggle="tab">网络图片</a></li>
+                                </ul>
+                                <div class="tab-content tab-content-custom">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <div class="form-group">
+                                            <label>缩略图</label>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="layui-upload-drag" id="image">
+                                                        <input type="hidden" name="smeta[thumb]" id="smeta_input"  value="{$smeta.thumb|default=''}">
+                                                        <div class="layui-upload-list" id="preview">
+                                                            {if condition="empty($smeta['thumb'])"}
+                                                            <p>{:lang('Upload')}</p>
+                                                            {else /}
+                                                            <img class="layui-upload-img img-responsive" src="{:sp_get_image_preview_url($smeta['thumb'])}">
+                                                            {/if}
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="help-block"></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <button class="btn btn-primary btn-flat" onclick="cancelImg();"> 取消图片</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab-pane -->
+                                    <div class="tab-pane" id="tab_2">
+                                        <div class="form-group">
+                                            <label>网络地址 </label>
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control input-sm remote_url" placeholder="http://">
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <button class="btn btn-primary btn-flat" onclick="addRemoteUrl();"> 添加</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- /.tab-pane -->
+                                </div>
+                                <!-- /.tab-content -->
+                            </div>
+
+                            <div class="form-group">
+                                <label>内容</label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <textarea id="editor" name="post[post_content]">{$post.post_content}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <input type="hidden" name="post[id]" value="{$post.id}">
+            </div>
+        </form>
+      </div>
+      <!-- /.tab-pane -->
+    </div>
+    <!-- /.tab-content -->
+    <div class="box-footer">
+        <div class="btn-group">
+            <button class="btn btn-primary btn-flat" onclick="operate();" type="button"> {:lang('Save')}</button>
+        </div>
+    </div>
+  </div>
+{/block}
+
+<!-- 自定义js -->
+{block name="js"}
+
+
+<script>
+$('.select2').select2({
+    multiple: true,
+});
+
+
+$('#date').datetimepicker({
+    format: 'YYYY-MM-DD HH:mm:ss'
+});
+
+
+layui.use('upload', function(){
+  var $ = layui.jquery
+  ,upload = layui.upload;
+  //拖拽上传
+  upload.render({
+    elem: "#image"
+    ,accept: 'file'
+    ,multiple: false
+    ,number: 1
+    ,url: "{:url('admin/upload/uploadFile')}"
+    ,done: function(res){
+      if (res.code == 200) {
+          $("#smeta_input").val(res.data.url);
+        $("[name='image']").val(res.data.url);
+        $("#preview").html("<img class=\'layui-upload-img img-responsive\' src=\'"+res.data.url+"\'>");
+      } else {
+        swal({
+          position: 'center',
+          type: 'error',
+          title: res.msg,
+          showConfirmButton: false,
+          toast:false,
+          timer: 2000
+        });
+      }
+    }
+  });
+  upload.render({ //允许上传的文件后缀
+    elem: "#attach"
+    ,url: "{:url('admin/upload/uploadAttach')}"
+    ,accept: "file" //普通文件
+    ,exts: "zip|rar|7z" //只允许上传压缩文件
+    ,done: function(res){
+      if (res.code == 200) {
+        $("[name='attach']").val(res.data.url);
+      } else {
+        swal({
+          position: 'center',
+          type: 'error',
+          title: res.msg,
+          showConfirmButton: false,
+          toast:false,
+          timer: 2000
+        });
+      }
+    }
+  });
+});
+</script>
+
+<script src="__STATIC__/ueditor/ueditor.config.js"></script>
+<script src="__STATIC__/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript">
+var ue = UE.getEditor('editor', {
+    toolbars: [
+        ['fullscreen', 'source', 'undo', 'redo', 'selectall', '|', 'removeformat', 'formatmatch', 'autotypeset', 'cleardoc', '|', 'template', 'indent', 'horizontal','justifyleft', 'justifyright', 'justifycenter', 'justifyjustify', 'insertcode'],
+        ['fontfamily', 'fontsize', '|', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'link', 'unlink', 'inserttable', 'deletetable', 'simpleupload', 'insertimage']
+    ],
+    initialFrameWidth: '100%',
+    initialFrameHeight:300,
+    scaleEnabled:true,
+    serverUrl: '{:url("admin/ueditor/index")}',
+});
+</script>
+<script type="text/javascript">
+
+    function operate(){
+        $.ajax({
+            url:"{:url('admin/document/edit')}",
+            data:$("#operate").serialize(),
+            type:'post',
+            dataType:'json',
+            success:function(xhr){
+                if(xhr.code == 200){
+                    swal({
+                      position: 'center',
+                      type: 'success',
+                      title: xhr.msg,
+                      showConfirmButton: false,
+                      toast:false,
+                      timer: 2000
+                    });
+                } else{
+                    swal({
+                      position: 'center',
+                      type: 'error',
+                      title: xhr.msg,
+                      showConfirmButton: false,
+                      toast:false,
+                      timer: 2000
+                    });
+                }
+            }
+        });
+    }
+
+    function addRemoteUrl(){
+        var url = $('.remote_url').val();
+        if(url == ''){
+            swal({
+                position: 'center',
+                type: 'error',
+                title: '请填写图片地址',
+                showConfirmButton: false,
+                toast:false,
+                timer: 1000
+            });
+            return false;
+        }
+
+        $("#smeta_input").val(url);
+        $("#preview").html("<img class=\'layui-upload-img img-responsive\' src=\'"+url+"\'>");
+        $('.nav-tabs-custom-tab .nav-tabs li').removeClass('active').eq(0).addClass('active');
+        $('.tab-content-custom .tab-pane').removeClass('active').eq(0).addClass('active');
+
+        event.preventDefault();
+        return false;
+    }
+
+    function cancelImg(){
+
+        $("#smeta_input").val('');
+        $("#preview").html("<p>UPLOAD</p>");
+
+        event.preventDefault();
+        return false;
+    }
+</script>
+{/block}
+
+

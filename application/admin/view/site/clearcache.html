@@ -1,0 +1,25 @@
+<!-- 模板继承 -->
+{extend name="public:base" /}
+
+<!-- 页面标题 -->
+{block name="title"}Administrator{/block}
+
+<!-- 自定义css -->
+{block name="css"}{/block}
+
+<!-- 内容区域 -->
+{block name="content"}
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#">{:lang('clearcache')}</a></li>
+    </ul>
+
+    <div class="box box-solid">
+        <div class="box-header with-border" style="margin:20px 0;">
+          <h3 class="box-title">清除缓存成功！</h3>
+        </div>
+
+        <!-- /.box-body -->
+    </div>
+  </div>
+{/block}

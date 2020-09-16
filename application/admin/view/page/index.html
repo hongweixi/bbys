@@ -1,0 +1,205 @@
+<!-- 模板继承 -->
+{extend name="public:base" /}
+
+<!-- 页面标题 -->
+{block name="title"}Administrator{/block}
+
+<!-- 自定义css -->
+{block name="css"}{/block}
+
+<!-- 内容区域 -->
+{block name="content"}
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#">{:lang('Page')}</a></li>
+      <li class=""><a href="{:url('admin/page/create')}">{:lang('Create')}</a></li>
+    </ul>
+
+    <div class="box box-solid">
+        <div class="box-header with-border">
+          <h3 class="box-title">{:lang('Filter')}</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <form action="#" method="get" class="form-inline">
+
+                <div class="form-group">
+                    <label>时间：</label>
+                    <input type="text" name="start_time" class="js-datetime form-control" value="{$search.start_time|default=''}" style="width: 120px;" autocomplete="off">-
+                    <input type="text" class="js-datetime form-control" name="end_time" value="{$search.end_time|default=''}" style="width: 120px;" autocomplete="off"> &nbsp; &nbsp;
+                </div>
+                <div class="form-group">
+                    <label>关键字：</label>
+                    <input type="text" name="keyword" class="form-control" style="width: 200px;" value="{$search.keyword|default=''}" placeholder="请输入关键字...">
+                </div>
+
+              <button type="submit" class="btn btn-primary btn-flat"> <i class="fa fa-search"></i> {:lang('Search')}</button>
+            </form>
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+    <div class="tab-content">
+        <div class="tab-pane active table-responsive no-padding">
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th><input id="checkAll" type="checkbox"></th>
+                        <th>#ID</th>
+                        <th>{:lang('Title')}</th>
+                        <th>作者</th>
+                        <th>关键字/来源/摘要/缩略图</th>
+                        <th>发布时间</th>
+                        <th>{:lang('Action')}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name="list" id="vo"}
+                    <tr id = "tr_{$vo.id}">
+                        <td><input name="ids[]" value="{$vo.id}" type="checkbox"></td>
+                        <td>{$vo.id}</td>
+                        <td>
+                            {notempty name="term"}
+                            <a href="{:leuu('portal/article/index',array('id'=>$vo['id'],'cid'=>$term['term_id']))}" target="_blank">{$vo.post_title}</a>
+                            {else/}
+                            {$vo.post_title}
+                            {/notempty}
+                        </td>
+                        <td>{$vo.user_nicename|default=$vo.user_login}</td>
+                        <td>
+                            {notempty name="vo.post_keywords"}
+                            <i class="fa fa-check fa-fw"></i>
+                            {else/}
+                            <i class="fa fa-close fa-fw"></i>
+                            {/notempty}
+                            {notempty name="vo.post_source"}
+                            <i class="fa fa-check fa-fw"></i>
+                            {else/}
+                            <i class="fa fa-close fa-fw"></i>
+                            {/notempty}
+                            {notempty name="vo.post_excerpt"}
+                            <i class="fa fa-check fa-fw"></i>
+                            {else/}
+                            <i class="fa fa-close fa-fw"></i>
+                            {/notempty}
+
+                            {php}$smeta=json_decode($vo['smeta'],true);{/php}
+                            {notempty name="smeta.thumb"}
+                            <a href="javascript:parent.image_preview_dialog('{:sp_get_image_preview_url($smeta['thumb'])}');">
+                                <i class="fa fa-photo fa-fw"></i>
+                            </a>
+                            {/notempty}
+                        </td>
+                        <td>{:date('Y-m-d H:i',strtotime($vo['post_date']))}</td>
+                        <td>
+                            <a href="{:url('admin/page/edit', ['id' => $vo['id']])}"></i> {:lang('Edit')}</a>
+                            <a onclick="remove('{$vo.id}')" href="#"> {:lang('Delete')}</a>
+                        </td>
+                    </tr>
+                    {/volist}
+                    {empty name="list"}
+                    <tr>
+                        <td colspan="7" class="text-center">{:lang("No record")}</td>
+                    </tr>
+                    {/empty}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.tab-pane -->
+    </div>
+    <!-- /.tab-content -->
+    <div class="box-footer">
+        <div class="row">
+
+          <div class="col-md-6">
+             {$page}
+          </div>
+        </div>
+    </div>
+  </div>
+
+
+{/block}
+
+<!-- 自定义js -->
+{block name="js"}
+<script type="text/javascript">
+
+    $('.js-datetime').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+    //批量操作
+    function handle(){
+        var chk_value =[]; 
+        $('input[name="ids[]"]:checked').each(function(){ 
+            chk_value.push($(this).val()); 
+        }); 
+        var type = $('#type option:selected').val() ;
+        if(chk_value.length < 1){
+            swal({
+                title: "{:lang('No record selected')}",
+                text: "",
+                type: "warning"
+            });
+        }else{
+            swal({
+              title: "{:lang('Are you sure')}",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: "{:lang('Yes')}",
+              cancelButtonText: "{:lang('No')}",
+            }).then(function(result){
+              if (result.value) {
+                $.ajax({
+                    url:"{:Url('admin/document/handle')}",
+                    data:{'ids':chk_value, 'type':type},
+                    type:'post',
+                    dataType:'json',
+                    success: function(xhr){
+                        if(xhr.code == 200){
+                            swal(xhr.msg, "","success").then(function(value){
+                              window.location.reload();
+                            });
+                        }else{
+                            swal(xhr.msg, "", "error");
+                        }
+                    }
+                })
+              }
+            })
+        }
+    }
+
+    function remove(id){
+        swal({
+          title: "{:lang('Are you sure')}",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: "{:lang('Yes')}",
+          cancelButtonText: "{:lang('No')}",
+        }).then(function(result){
+          if (result.value) {
+            $.ajax({
+                url:"{:Url('admin/page/remove')}",
+                data:{'id':id},
+                type:'post',
+                dataType:'json',
+                success: function(xhr){
+                    if(xhr.code == 200){
+                        swal(xhr.msg, "","success").then(function(value){
+                            $("#tr_" + id).remove();
+                        });
+                    }else{
+                        swal(xhr.msg, "", "error");
+                    }
+                }
+            })
+          }
+        })
+    }
+</script>
+{/block}

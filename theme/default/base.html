@@ -1,0 +1,40 @@
+<?php
+    $siteinfo = sp_get_site_info();
+?>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8"/>
+    <title><?=$siteinfo->site_name?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="__PUBLIC__/Home/css/public.css" type="text/css" rel="stylesheet" />
+    <link href="__PUBLIC__/Home/favicon.ico" rel="shortcut icon">
+    <link href="__PUBLIC__/Home/css/index.css" type="text/css" rel="stylesheet" />
+    <script src="__PUBLIC__/Home/js/jquery-1.9.1.js"></script>
+    <script src="__PUBLIC__/Home/js/swiper.jquery.min.js"></script>
+    <script src="__PUBLIC__/Home/js/jquery.carouFredSel.js"></script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-532965a902fc0807" async="async"></script>
+    <script src="__PUBLIC__/Home/js/jquery.SuperSlide.js"></script>
+
+    {block name="css"}{/block}
+</head>
+<body>
+
+
+<div class="wrapper">
+
+
+    {include file="default:header" /}
+
+    {block name="content"}{/block}
+
+    {include file="default:footer" /}
+
+    {block name="js"}{/block}
+</div>
+
+<!--主体内容 end-->
+<script src="__PUBLIC__/Home/js/index.js"></script>
+
+</body>
+</html>

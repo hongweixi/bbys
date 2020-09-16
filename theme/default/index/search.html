@@ -1,0 +1,39 @@
+{extend name="../../../theme/default/base" /}
+{block name="css"}
+<link href="__PUBLIC__/Home/css/searchlist.css" type="text/css" rel="stylesheet" />
+{/block}
+
+{block name="content"}
+<!--主体内容-->
+<div class="f_content">
+    <div class="p_crumbs">
+        {php}
+            $result = sp_sql_posts_paged_bykeyword($keyword, "", 10);
+        {/php}
+        <div class="m_crumbs">
+            <a href="#"><span class="icon_home_f"></span>首页</a>
+            &gt;
+            <span>搜索</span>
+        </div>
+        <p>'{$keyword}'搜索结果: {$result['count'] == '' ? 0 : $result['count']}条结果</p>
+    </div>
+    <div class="search_result">
+        {if condition="empty($result['posts'])"}
+            <h3>没有搜索到结果</h3>
+            {else /}
+            <ul>
+                {volist name="result['posts']" id="vo"}
+                    <li><a href="{:leuu('Home/Index/details', array('id' => $vo['object_id'], 'cid' => $vo['term_id']))}">{$vo.post_title}</a> <span>{$vo.post_date}</span></li>
+                {/volist}
+            </ul>
+            <div class="p_paging">
+                <div class="pagination">
+                    <ul>
+                        {$result['posts']->render()}
+                    </ul>
+                </div>
+            </div>
+        {/if}
+    </div>
+</div>
+{/block}
