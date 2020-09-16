@@ -17,11 +17,6 @@ return [
     'database'        => 'chamber',
     'username'        => 'root',
     'password'        => 'root',
-    //线上
-    /*'hostname'        => 'localhost',
-    'database'        => 'chamber',
-    'username'        => 'root',
-    'password'        => 'tOps@abc213,',*/
     // 端口
     'hostport'        => '3306',
     // 连接dsn
