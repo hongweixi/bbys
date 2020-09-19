@@ -1,0 +1,39 @@
+{extend name="../../../theme/default/base" /}
+
+{block name="css"}
+{/block}
+{block name="content"}
+<!--主体内容-->
+<div class="f_content ">
+    <div class="f_content_banner">
+        <img src="__PUBLIC__/Home/images/cpjs_head.png" alt="">
+        <div class="title center_row">
+            <h1>{$page.label}</h1>
+            <p>首页 > {$page.label}</p>
+        </div>
+    </div>
+    <form action="" class="message_form">
+        <p>反馈内容</p>
+        <textarea name="message_content" id="" cols="30" rows="10"></textarea>
+        <p>联系方式（电话或邮箱）</p>
+        <input type="text" class="tel">
+        <br>
+        <div style="text-align: right;">
+            <input type="submit" class="submit" value="提交">
+        </div>
+
+    </form>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+$('.nav_left').click(function (){
+    $('.nav_left').removeClass('active');
+    $(this).addClass('active');
+    var nav_id = $(this).attr('nav_id');
+    $(".right_li").hide();
+    $(".right_li_"+nav_id).show();
+})
+</script>
+{/block}

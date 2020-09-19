@@ -9,9 +9,13 @@ class Index extends Base
 {
     public function index()
     {
-        $data = $this->getChamberInfo();
+//        var_dump(1);
+//        var_dump($_SERVER);
+//        exit;
+
+//        $data = $this->getChamberInfo();
         //滚动新闻:取商会动态修改时间前3条
-        $scrollPosts = sp_sql_posts('cid:26;field:object_id,term_id,post_title;limit:0,3;order:post_modified DESC');
+//        $scrollPosts = sp_sql_posts('cid:26;field:object_id,term_id,post_title;limit:0,3;order:post_modified DESC');
 
 //        $this->assign("data", $data);
 //        $this->assign("scrollPosts", $scrollPosts);
@@ -20,176 +24,139 @@ class Index extends Base
         return $this->fetch('default/index/index', compact('data','scrollPosts'));
     }
 
-    // 搜索
-    public function search()
+    public function product($p = 0)
     {
-        $keyword = input('request.keyword/s','');
+        if($p){
 
-        if (empty($keyword)) {
-            $this -> error("关键词不能为空！请重新输入！");
-        }
-        return $this->fetch('default/index/search', compact('keyword'));
-        $this->assign("keyword", $keyword);
-        $this->display(":search");
-    }
+            $nav_left = [];
+            $rs_data = [];
 
-    // 列表
-    public function newList()
-    {
-        $termId = input('get.id', 0, 'intval');
-        $tag = 'field:object_id,term_id,post_modified,post_title,post_content;order:post_date desc,post_modified DESC;';
-        $pageSet = 20;
-        $list = sp_sql_posts_paged_bycatid($termId, $tag, $pageSet);
-
-        $category = $this->getCategoryInfo($termId);
-
-        return $this->fetch('default/index/newlist', compact('list', 'category'));
-        $this->assign("list", $list);
-        $this->assign("category", $category);
-        $this->display(":list");
-    }
-
-    // 新闻详情
-    public function details()
-    {
-        //新闻id
-        $articleId = input('get.id', 0, 'intval');
-
-        //分类id
-        $termId = input('get.cid', 0, 'intval');
-
-        //新闻详情
-        $news = sp_sql_post($articleId);
-
-        if (empty($news)) {
-//            header('HTTP/1.1 404 Not Found');
-//            header('Status:404 Not Found');
-
-            $this->redirect('/404.html');
-            exit;
-
-            /*$this->display(":404");
-            if(sp_template_file_exists(MODULE_NAME."/404")){
-                $this->display(":404");
+            $terms_model= db("nav");
+            $where[] = ['parentid', '=', 0];
+            $where[] = ['status', '=', 1];
+            $where[] = ['id', '=', $p];
+            $page = $terms_model->field(['id','label'])->where($where)->limit(1)->find();
+            if(!empty($page)){
+                $nav_left = $this->getNavLeft( $page['id'] );
+                $rs_data = $this->getData( $nav_left );
             }
-            return;*/
+
+        }else{
+            $nav_left = [];
+            $rs_data = [];
+            if( ($page = $this->getPage()) ){
+                $nav_left = $this->getNavLeft( $page['id'] );
+                $rs_data = $this->getData( $nav_left );
+            }
         }
 
-        $tag = 'cid:'. $termId . 'field:object_id,term_id,post_title;limit:0,5;order:post_modified DESC;where:object_id != '.$articleId;
 
-        //相关文章
-        $relatedPosts = sp_sql_posts($tag);
-
-        //上一篇
-        $lastPosts = $this->getPosts($articleId, $termId, 'desc');
-
-        //下一篇
-        $nextPosts = $this->getPosts($articleId, $termId, 'asc');
-
-        $category = $this->getCategoryInfo($termId);
-
-        $details  = [
-            'title' => $news['post_title'],
-            'content' => $news['post_content'],
-            'thumb' => empty(json_decode($news['smeta'], true)['thumb']) ?  "" : sp_get_asset_upload_path(json_decode($news['smeta'], true)['thumb']),
-            'date' => $news['post_modified'],
-            'category' => $category,
-            'related_posts' => $relatedPosts,
-            'last_posts' => $lastPosts,
-            'next_posts' => $nextPosts,
-            'cid' => $termId,
-        ];
-
-        return $this->fetch('default/index/details', compact('details'));
+        return $this->fetch('default/index/product', compact('nav_left','rs_data','page'));
     }
 
-    //获取对应分类信息
-    public function getCategoryInfo($termId)
+    public function support($p = 0, $detail = 0)
     {
-        $term = sp_get_term($termId);
-        if(empty($term)){
-            return $term;
-        }
-        //一级分类
-        $data['one_category'] = $term['name'];
-        if ($term['parent'] != 0) {
-            //二级分类
-            $data['one_category'] = sp_get_term($term['parent'])['name'];
-            $data['two_category'] = $term['name'];
+        $terms_model= db("nav");
+        $where[] = ['parentid', '=', 0];
+        $where[] = ['status', '=', 0];
+        $where[] = ['id', '=', $p];
+        $page = $terms_model->field(['id','label'])->where($where)->limit(1)->find();
+
+        if($detail != 0){
+            $info = $this->getPostInfo($detail);
+            return $this->fetch('default/index/supportDetail', compact('info','page'));
         }
 
-        return $data;
-    }
-
-    //获取上一篇/下一篇文章
-    public function getPosts($articleId, $termId, $order)
-    {
-        $map[] = ['term_relationships.term_id', 'in', array($termId)];
-        $map[] = ['term_relationships.status', '=', 1];
-        $map[] = ['posts.post_status', '=', 1];
-
-        if ($order == 'desc') {
-            $map[] = ['id', '<', $articleId];
-//            $map['id'] = array('lt', $articleId);
-        } else {
-            $map[] = ['id', '>', $articleId];
-//            $map['id'] = array('gt', $articleId);
+        if(!empty($page)){
+            $rs_data = $this->getData( [['id'=>$page['id']]] );
         }
 
-        $posts = db("TermRelationships")
-            ->alias("term_relationships")
-            ->join('__POSTS__ posts','term_relationships.object_id = posts.id')
-            ->field('posts.id,posts.post_title')
-            ->where($map)
-            ->order(array('posts.id' => $order))
-            ->limit(1)
-            ->find();
-
-        return $posts;
+        return $this->fetch('default/index/support', compact('rs_data','page'));
     }
 
-    //获取商会介绍文章列表
-    public function chamberList()
-    {
-        $list = $this->getChamberInfo();
-        $category = $this->getCategoryInfo(1);
-        $this->assign("list", $list);
-        $this->assign("category", $category);
-        $this->display(":chamberlist");
-    }
-
-    //获取商会介绍对应文章
-    public function getChamberInfo()
+    public function news($detail = 0)
     {
 
-        //商会介绍
-        $terms = db("Terms")->where("status=1 and parent=1")->order("listorder asc")->select();
 
-        $data = [];
-        foreach ($terms as $key => $value) {
-            $data[$key]['name'] = $value['name'];
-            $data[$key]['id'] = $this->getNews($value['term_id'])['id'];
-            $data[$key]['term_id'] = $value['term_id'];
-            $data[$key]['post_modified'] = $this->getNews($value['term_id'])['post_modified'];
+//        $page = $terms_model->field(['id','label'])->where($where)->limit(1)->find();
+
+
+        $terms_model= db("nav");
+        $where[] = ['parentid', '=', 0];
+        $where[] = ['status', '=', 0];
+        $where[] = ['id', '=', 72];
+        $page = $terms_model->field(['id','label'])->where($where)->limit(1)->find();
+
+
+        if($detail != 0){
+            $info = $this->getPostInfo($detail);
+            return $this->fetch('default/index/newsDetail', compact('info','page'));
         }
-        return $data;
+        $terms_model= db("posts");
+        $rs_data = $terms_model->where(['post_type'=>1])->where(['post_status'=>1])->order('post_date desc')->select();
+
+
+
+        /*SELECT
+DATE_FORMAT( detect_time, "%Y-%m-%d" ) AS time,
+COUNT(id) AS total
+FROM detect_video_task_result_real
+GROUP BY DATE_FORMAT( detect_time, "%Y-%m-%d" )*/
+
+
+        return $this->fetch('default/index/news', compact('rs_data', 'page'));
     }
 
-    public function getNews($termId)
+    public function message()
     {
+        $terms_model= db("nav");
+        $where[] = ['parentid', '=', 0];
+        $where[] = ['status', '=', 0];
+        $where[] = ['id', '=', 71];
+        $page = $terms_model->field(['id','label'])->where($where)->limit(1)->find();
+        return $this->fetch('default/index/message',compact('page'));
+    }
 
-        $map[] = ['term_relationships.term_id', 'in', array($termId)];
-        $map[] = ['term_relationships.status', '=', 1];
-        $map[] = ['posts.post_status', '=', 1];
+    function getPostInfo($id){
+        return db("posts")->where(['id' => $id])->find();
+    }
 
-        $posts = db("TermRelationships")
-            ->alias("term_relationships")
-            ->join('__POSTS__ posts', 'term_relationships.object_id = posts.id')
-//            ->join('__POSTS__ as posts on term_relationships.object_id = posts.id')
-            ->field('posts.id,posts.post_title,posts.post_content,posts.post_modified')
-            ->where($map)
-            ->find();
+    function getPage(){
+        $url = \request()->url();
+        $url = substr($url, 0, -5);
+        $terms_model= db("nav");
+        $where[] = ['parentid', '=', 0];
+        $where[] = ['status', '=', 1];
+        $where[] = ['href', '=', $url];
+        $terms = $terms_model->field(['id','label'])->where($where)->limit(1)->find();
+        if(!empty($terms)){
+            return $terms;
+        }
+        return 0;
+    }
 
-        return $posts;
+    function getNavLeft($page_id){
+        $terms_model= db("nav");
+        $where[] = ['parentid', '=', $page_id];
+        $where[] = ['status', '=', 1];
+        $terms = $terms_model->where($where)->select();
+        return $terms;
+    }
+
+    private function getData($nav_left)
+    {
+        $model= db("posts");
+        $ids = [];
+        foreach($nav_left as $v){
+            array_push($ids, $v['id']);
+        }
+        $lists = $model->where(['menu_id' => $ids])->select();
+        foreach($lists as &$v1){
+            if($v1['smeta'] != ''){
+                $smeta = json_decode($v1['smeta']);
+                $v1['smeta'] = $smeta->thumb;
+            }
+        }
+        return $lists;
     }
 }

@@ -19,7 +19,34 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1610d988-f9c9-42ea-be60-ee616cb40233" name="Default Changelist" comment="" />
+    <list default="true" id="1610d988-f9c9-42ea-be60-ee616cb40233" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/controller/Category.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/Category.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/controller/Document.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/Document.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/controller/Page.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/Page.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/controller/Slider.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/Slider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/view/category/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/category/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/view/category/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/category/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/view/document/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/document/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/view/document/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/document/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/view/page/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/page/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/view/page/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/page/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/view/slider/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/slider/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/view/slider/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/slider/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/view/slider/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/slider/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/common/service/ApiService.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/common/service/ApiService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/home/controller/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/home/controller/Index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/home/view/default/footer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/home/view/default/header.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/Home/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/Home/css/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/Home/css/public.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/Home/css/public.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/theme/default/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/theme/default/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/theme/default/footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/theme/default/footer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/theme/default/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/theme/default/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/theme/default/index/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/theme/default/index/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thinkphp/function.php" beforeDir="false" afterPath="$PROJECT_DIR$/thinkphp/function.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thinkphp/library/think/Error.php" beforeDir="false" afterPath="$PROJECT_DIR$/thinkphp/library/think/Error.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -58,15 +85,15 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/Home/images" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/theme/default/index" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/public/Home/images" />
+      <recent name="$PROJECT_DIR$/theme/default/index" />
+      <recent name="$PROJECT_DIR$/theme/default" />
       <recent name="$PROJECT_DIR$/application/home/view/default" />
+      <recent name="$PROJECT_DIR$/public/Home/images" />
       <recent name="$PROJECT_DIR$/application/admin/view/site" />
-      <recent name="$PROJECT_DIR$/application/admin/view" />
-      <recent name="$PROJECT_DIR$/application/admin/controller" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -83,7 +110,10 @@
       <workItem from="1589888991841" duration="13140000" />
       <workItem from="1589954936842" duration="48015000" />
       <workItem from="1590117435582" duration="2823000" />
-      <workItem from="1600245862659" duration="9567000" />
+      <workItem from="1600245862659" duration="9838000" />
+      <workItem from="1600322370657" duration="1070000" />
+      <workItem from="1600326870544" duration="6830000" />
+      <workItem from="1600341434594" duration="26766000" />
     </task>
     <servers />
   </component>
@@ -103,13 +133,22 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="142" y="76" width="840" height="551" key="find.popup" timestamp="1600259690594">
+    <state x="34" y="57" width="1298" height="624" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1600399232559">
       <screen x="0" y="23" width="1366" height="692" />
     </state>
-    <state x="142" y="76" width="840" height="551" key="find.popup/0.23.1366.692@0.23.1366.692" timestamp="1600259690594" />
-    <state x="348" y="39" width="670" height="676" key="search.everywhere.popup" timestamp="1600258747998">
+    <state x="34" y="57" width="1298" height="624" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1366.692@0.23.1366.692" timestamp="1600399232559" />
+    <state x="142" y="76" width="840" height="551" key="find.popup" timestamp="1600393549971">
       <screen x="0" y="23" width="1366" height="692" />
     </state>
-    <state x="348" y="39" width="670" height="676" key="search.everywhere.popup/0.23.1366.692@0.23.1366.692" timestamp="1600258747998" />
+    <state x="142" y="76" width="840" height="551" key="find.popup/0.23.1366.692@0.23.1366.692" timestamp="1600393549971" />
+    <state x="348" y="39" width="670" height="677" key="search.everywhere.popup" timestamp="1600420796162">
+      <screen x="0" y="23" width="1366" height="693" />
+    </state>
+    <state x="348" y="39" width="670" height="676" key="search.everywhere.popup/0.23.1366.692@0.23.1366.692" timestamp="1600409206756" />
+    <state x="348" y="39" width="670" height="677" key="search.everywhere.popup/0.23.1366.693@0.23.1366.693" timestamp="1600420796162" />
+    <state x="413" y="288" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1600395983669">
+      <screen x="0" y="23" width="1366" height="692" />
+    </state>
+    <state x="413" y="288" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.23.1366.692@0.23.1366.692" timestamp="1600395983669" />
   </component>
 </project>

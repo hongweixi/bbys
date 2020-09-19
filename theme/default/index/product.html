@@ -1,0 +1,67 @@
+{extend name="../../../theme/default/base" /}
+
+{block name="css"}
+{/block}
+{block name="content"}
+<!--主体内容-->
+<div class="f_content ">
+    <div class="f_content_banner">
+        <img src="__PUBLIC__/Home/images/cpjs_head.png" alt="">
+        <div class="title center_row">
+            <h1>{$page.label}</h1>
+            <p>首页 > {$page.label}</p>
+        </div>
+    </div>
+    <div class="menu">
+        <ul>
+            {volist name="nav_left" id="data" key="k"}
+            <li class="{$k == 1 ? 'active' : ''}">
+                <a href="">{$data.label}</a>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+    <div class="row center_row row_content">
+        <div class="col-3 left">
+            <ul>
+                {volist name="nav_left" id="data" key="k"}
+                <li class="nav_left {$k == 1 ? 'active' : ''}" nav_id="{$data.id}">
+                    <p class="p1">{$data.label}</p>
+                    <p class="p2">{$data.short_title}</p>
+                </li>
+                {/volist}
+            </ul>
+        </div>
+        <div class="col-8 right">
+            <ul>
+                {volist name="rs_data" id="item"}
+                <li class="right_li right_li_{$item.menu_id} {$item.menu_id == $id ? 'hide' : ''}">
+                    <h2>{$item.post_title}</h2>
+                    <div class="row">
+                        <div class="col-3">
+                            <img src="{$item.smeta}" alt="">
+                        </div>
+                        <div class="col-8 content">
+                            {$item.post_content}
+                        </div>
+                    </div>
+                </li>
+                {/volist}
+
+            </ul>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+$('.nav_left').click(function (){
+    $('.nav_left').removeClass('active');
+    $(this).addClass('active');
+    var nav_id = $(this).attr('nav_id');
+    $(".right_li").hide();
+    $(".right_li_"+nav_id).show();
+})
+</script>
+{/block}

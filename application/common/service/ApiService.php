@@ -440,17 +440,20 @@ class ApiService {
         //根据参数生成查询条件
         $where[] = ['status', '=', 1];
 
-        if (isset($tag['ids'])) {
+        /*if (isset($tag['ids'])) {
             $tag['ids']=explode(',', $tag['ids']);
             $tag['ids']=array_map('intval', $tag['ids']);
             $where[] = ['term_id', 'in', $tag['ids']];
+        }*/
+
+
+        if (isset($tag['where'])) {
+            list($key, $value) =explode('=', $tag['where']);
+            $where[] = [$key, '=', $value];
         }
 
-//        if (isset($tag['where'])) {
-//            $where['_string'] = $tag['where'];
-//        }
+        $terms_model= db("nav");
 
-        $terms_model= db("Terms");
         $terms=$terms_model->field($field)->where($where)->order($order)->limit($limit)->select();
         return $terms;
     }

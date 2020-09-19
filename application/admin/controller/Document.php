@@ -86,9 +86,9 @@ class Document extends Admin
         // 处理AJAX提交数据
         if (Request::isAjax()) {
 
-            if(empty($_POST['term'])){
+            /*if(empty($_POST['term'])){
                 return $this->response(201, "请至少选择一个分类！");
-            }
+            }*/
             if(!empty($_POST['photos_alt']) && !empty($_POST['photos_url'])){
                 foreach ($_POST['photos_url'] as $key=>$url){
                     $photourl=sp_asset_relative_url($url);
@@ -104,9 +104,9 @@ class Document extends Admin
             $article['post_content']=htmlspecialchars_decode($article['post_content']);
             $result=db('posts')->insertGetId($article);
             if ($result) {
-                foreach ($_POST['term'] as $mterm_id){
+               /* foreach ($_POST['term'] as $mterm_id){
                     $rs = db('term_relationships')->insert(array("term_id"=>intval($mterm_id),"object_id"=>$result));
-                }
+                }*/
                 return $this->response(200, Lang::get('Success'));
             } else {
                 return $this->response(201, Lang::get('Fail'));
@@ -129,6 +129,7 @@ class Document extends Admin
         $tree = new \Tree();
         $tree->icon = array('&nbsp;&nbsp;&nbsp;│ ', '&nbsp;&nbsp;&nbsp;├─ ', '&nbsp;&nbsp;&nbsp;└─ ');
         $tree->nbsp = '&nbsp;&nbsp;&nbsp;';
+        $array = array();
         foreach ($result as $r) {
             $r['str_manage'] = '<a href="' . url("AdminTerm/add", array("parent" => $r['term_id'])) . '">添加子类</a> | <a href="' . url("AdminTerm/edit", array("id" => $r['term_id'])) . '">修改</a> | <a class="js-ajax-delete" href="' . url("AdminTerm/delete", array("id" => $r['term_id'])) . '">删除</a> ';
             $r['visit'] = "<a href='#'>访问</a>";
@@ -174,24 +175,24 @@ class Document extends Admin
     {
         // 处理AJAX提交数据
         if (Request::isAjax()) {
-            if(empty($_POST['term'])){
+            /*if(empty($_POST['term'])){
                 return $this->response(201, "请至少选择一个分类！");
-            }
+            }*/
             $post_id=intval($_POST['post']['id']);
 
-            db('term_relationships')
+            /*db('term_relationships')
 //                ->where(array("object_id"=>$post_id,"term_id"=>array("not in",implode(",", $_POST['term']))))
                 ->where("object_id", $post_id)
                 ->whereNotIn("term_id", implode(",", $_POST['term']))
-                ->delete();
-            foreach ($_POST['term'] as $mterm_id){
+                ->delete();*/
+            /*foreach ($_POST['term'] as $mterm_id){
                 $find_term_relationship=db('term_relationships')->where(array("object_id"=>$post_id,"term_id"=>$mterm_id))->count();
                 if(empty($find_term_relationship)){
                     db('term_relationships')->insert(array("term_id"=>intval($mterm_id),"object_id"=>$post_id));
                 }else{
                     db('term_relationships')->where(array("object_id"=>$post_id,"term_id"=>$mterm_id))->update(array("status"=>1));
                 }
-            }
+            }*/
 
 
             if(!empty($_POST['photos_alt']) && !empty($_POST['photos_url'])){

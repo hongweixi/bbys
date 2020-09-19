@@ -99,6 +99,23 @@ class Page extends Admin
                 return $this->response(201, Lang::get('Fail'));
             }
         }
+        $result = db('nav')->order(array("listorder" => "ASC"))->select();
+        import('Tree');
+        $tree = new \Tree();
+        $tree->icon = array('&nbsp;│ ', '&nbsp;├─ ', '&nbsp;└─ ');
+        $tree->nbsp = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        $parentid= input("get.parentid",0,'intval');
+        foreach ($result as $r) {
+            $r['str_manage'] = '<a href="' . url("Menu/add", array("parentid" => $r['id'], "menuid" => input("get.menuid"))) . '">添加子菜单</a> | <a href="' . url("Menu/edit", array("id" => $r['id'], "menuid" => input("get.menuid"))) . '">修改</a> | <a class="js-ajax-delete" href="' . url("Menu/delete", array("id" => $r['id'], "menuid" => input("get.menuid"))) . '">删除</a> ';
+            $r['status'] = $r['status'] ? "显示" : "隐藏";
+            $r['selected'] = $r['id']==$parentid?"selected":"";
+            $array[] = $r;
+        }
+
+        $tree->init($array);
+        $str="<option value='\$id' \$selected>\$spacer\$label</option>";
+        $nav_trees = $tree->get_tree(0, $str);
+        $this->assign("nav_trees", $nav_trees);
         return $this->fetch('create');
     }
 
@@ -127,6 +144,25 @@ class Page extends Admin
         $id= input("get.id",0,'intval');
         $term=$terms_obj->where(array('term_id'=>$term_id))->find();
         $post=db('posts')->where(array('id'=>$id))->find();
+
+        $result = db('nav')->order(array("listorder" => "ASC"))->select();
+        import('Tree');
+        $tree = new \Tree();
+        $tree->icon = array('&nbsp;│ ', '&nbsp;├─ ', '&nbsp;└─ ');
+        $tree->nbsp = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        $parentid =  $post['menu_id'];
+        foreach ($result as $r) {
+            $r['str_manage'] = '<a href="' . url("Menu/add", array("parentid" => $r['id'], "menuid" => input("get.menuid"))) . '">添加子菜单</a> | <a href="' . url("Menu/edit", array("id" => $r['id'], "menuid" => input("get.menuid"))) . '">修改</a> | <a class="js-ajax-delete" href="' . url("Menu/delete", array("id" => $r['id'], "menuid" => input("get.menuid"))) . '">删除</a> ';
+            $r['status'] = $r['status'] ? "显示" : "隐藏";
+            $r['selected'] = $r['id']==$parentid?"selected":"";
+            $array[] = $r;
+        }
+
+        $tree->init($array);
+        $str="<option value='\$id' \$selected>\$spacer\$label</option>";
+        $nav_trees = $tree->get_tree(0, $str);
+        $this->assign("nav_trees", $nav_trees);
+
 
         $smeta = json_decode($post['smeta'],true);
         return $this->fetch('edit', compact('post','smeta','term'));

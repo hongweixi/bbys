@@ -237,6 +237,12 @@ function sp_get_terms($tag, $where = array())
     return ApiService::terms($tag, $where);
 }
 
+function isMenuActive($href)
+{
+    $url = substr($_SERVER['REQUEST_URI'], 0, -5);
+    return $url == $href ? 'active' : '';
+}
+
 /**
  * 获取Portal应用当前模板下的模板列表
  * @return array

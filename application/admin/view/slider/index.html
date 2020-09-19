@@ -13,17 +13,7 @@
     <ul class="nav nav-tabs">
       <li class="active"><a href="#">{:lang('Slider')}</a></li>
       <li class=""><a href="{:url('admin/slider/create')}">{:lang('Create')}</a></li>
-      <li class=""><a href="{:url('admin/slider/category')}">{:lang('Category')}</a></li>
     </ul>
-
-      <form class="well form-search" method="post" id="cid-form">
-          <select name="cid" style="width: 200px;" id="selected-cid" class="form-control">
-              {foreach name="categorys" item="vo"}
-              {php}$cid_select=$vo['cid']==$slide_cid?"selected":"";{/php}
-              <option value="{$vo.cid}" {$cid_select}>{$vo.cat_name}</option>
-              {/foreach}
-          </select>
-      </form>
 
       <div class="tab-content">
           <div class="tab-pane active table-responsive no-padding">

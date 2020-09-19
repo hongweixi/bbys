@@ -16,7 +16,7 @@ class Slider extends Admin
 
     public function index()
     {
-        $cates=array(
+        /*$cates=array(
             array("cid"=>"0","cat_name"=>"默认分类"),
         );
         $categorys=db('slide_cat')->field("cid,cat_name")->where("cat_status!=0")->select();
@@ -24,7 +24,7 @@ class Slider extends Admin
             $categorys=array_merge($cates,$categorys);
         }else{
             $categorys=$cates;
-        }
+        }*/
         $where=array();
         $cid = input('post.cid',0,'intval');
         if(!empty($cid)){
@@ -46,8 +46,8 @@ class Slider extends Admin
                 return $this->response(201, Lang::get('Fail'));
             }
         }
-        $categorys = db('slide_cat')->field("cid,cat_name")->where("cat_status!=0")->select();
-        return $this->fetch('create', ['categorys'=>$categorys]);
+//        $categorys = db('slide_cat')->field("cid,cat_name")->where("cat_status!=0")->select();
+        return $this->fetch('create');
     }
 
     public function edit()
@@ -64,10 +64,9 @@ class Slider extends Admin
             }
         }
 
-        $categorys=db('slide_cat')->field("cid,cat_name")->where("cat_status!=0")->select();
         $id = input("get.id",0,'intval');
         $slide=db('slide')->where(array('slide_id'=>$id))->find();
-        $data = array_merge($slide, ['categorys'=>$categorys]);
+        $data = array_merge($slide, []);
 
         return $this->fetch('edit', $data);
     }

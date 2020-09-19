@@ -8,106 +8,155 @@
         <!--轮播图-->
         <div class="m_swiper">
             <div class="swiper-wrapper">
+                {php}
+                $home_slides=sp_getslide("home_banner");
+                {/php}
+                {foreach name="home_slides" item="vo"}
                 <div class="swiper-slide">
-                    <a href="#">
-                        <img src="__PUBLIC__/Home/images/lb1.png">
+                    <a href="{$vo.slide_url}">
+                        <img src="{:sp_get_asset_upload_path($vo['slide_pic'])}">
                     </a>
                 </div>
+                {/foreach}
             </div>
             <div class="swiper-pagination"></div>
         </div>
         <!--轮播图-->
     </div>
-
 </div>
+<div class="pc_floor">
+    <div class="floor product_floor">
+        <div class="row">
+            <div class="col-12 floor_title center_row">
+                <p class="p1">产品介绍</p>
+                <p class="p_bottom"></p>
+                <p class="p2">PRODUCT DISPLAY</p>
+                <a class="more" href="{:leuu('/home/index/product/p/50')}">查看更多>> </a>
+            </div>
 
-<div class="floor product_floor">
-    <div class="row">
-        <div class="col-12 floor_title">
-            <p class="p1">产品介绍</p>
-            <p class="p_bottom"></p>
-            <p class="p2">PRODUCT DISPLAY</p>
+        </div>
+        <div class="row product center_row">
+            <div class="col-5 left">
+                <a href="">
+                    <img src="__PUBLIC__/Home/images/test.png" alt="">
+                    <div class="product-1">
+                        <div>
+                            <p class="desc">了解详情>></p>
+                            <p class="title">硬件终端</p>
+                        </div>
+                        <p class="shart_title">支持“照片、文档打印+证件照制作”功能</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-5 right">
+                <a href="">
+                    <img src="__PUBLIC__/Home/images/test.png" alt="">
+                    <div class="product-1">
+                        <div>
+                            <p class="desc">了解详情>></p>
+                            <p class="title">硬件终端</p>
+                        </div>
+                        <p class="shart_title">支持“照片、文档打印+证件照制作”功能</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="floor new_floor">
+        <div class="row">
+            <div class="col-12 floor_title center_row">
+                <p class="p1">新闻动态</p>
+                <p class="p_bottom"></p>
+                <p class="p2">NEWS</p>
+                <a class="more" href="{:leuu('/home/index/news')}">查看更多>> </a>
+            </div>
+
+        </div>
+        <div class="row news center_row">
+            <div class="col-5 left">
+                <a href="">
+                    <img src="__PUBLIC__/Home/images/test.png" alt="">
+                    <div class="title_box">
+                        <p class="title">发红包的新方式</p>
+                        <p class="short_title">百步印社 | 2020年1月21日</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-5 right">
+                <ul>
+                    <li>
+                        <a href="#">
+                            <p class="title">第二十届高交会完美收官 | 百步印社无人打印持续领跑</p>
+                            <p class="short_title">百步印社 | 2018年11月20日</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p class="title">2017高交会都市频道采访</p>
+                            <p class="short_title">百步印社 | 2017年11月22日</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p class="title">2017高交会财经频道采访视频</p>
+                            <p class="short_title">百步印社 | 2017年11月22日</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="floor partner_floor">
+        <div class="row">
+            <div class="col-12 floor_title center_row">
+                <p class="p1">合作伙伴</p>
+                <p class="p_bottom"></p>
+                <p class="p2">PARTNER</p>
+                <a class="more" href="{:leuu('/home/index/product/p/54')}">查看更多>> </a>
+            </div>
+        </div>
+        {php}
+        $links = sp_getlinks();
+        {/php}
+
+        <div class="row brand center_row">
+            {foreach name="links" item="vo"}
+            <div class="col-3">
+                <a href=""><img src="{:sp_get_image_url($vo['link_image'])}" alt=""></a>
+            </div>
+            {/foreach}
         </div>
 
     </div>
-    <div class="row product">
-        <a href="#" class="col-6 product_box product_left">
-            <div class="product-1">
-                <p class="desc">了解详情>></p>
-                <p class="title">硬件终端</p>
-                <p class="shart_title">支持“照片、文档打印+证件照制作”功能</p>
-
-            </div>
-        </a>
-        <a href="#" class="col-6 product_box product_right">
-            <div class="product-1">
-                <p class="desc">了解详情>></p>
-                <p class="title">硬件终端</p>
-                <p class="shart_title">支持“照片、文档打印+证件照制作”功能</p>
-
-            </div>
-
-        </a>
-    </div>
 </div>
-<div class="floor new_floor">
-    <div class="row">
-        <div class="col-12 floor_title">
-            <p class="p1">新闻动态</p>
-            <p class="p_bottom"></p>
-            <p class="p2">NEWS</p>
+
+<div class="wap_floor">
+    <!--<div class="floor1">
+        <div class="f1_header">
+            <h1></h1>
+            <span class="more"></span>
         </div>
-
-    </div>
-    <div class="row product">
-        <a href="#" class="col-6 product_box product_left">
-            <div class="product-1">
-                <p class="desc">了解详情>></p>
-                <p class="title">硬件终端</p>
-                <p class="shart_title">支持“照片、文档打印+证件照制作”功能</p>
-
-            </div>
-        </a>
-        <a href="#" class="col-6 product_box product_right">
-            <div class="product-1">
-                <p class="desc">了解详情>></p>
-                <p class="title">硬件终端</p>
-                <p class="shart_title">支持“照片、文档打印+证件照制作”功能</p>
-
-            </div>
-
-        </a>
-    </div>
+        <div class=""></div>
+    </div>-->
 </div>
-
-<div class="floor partner_floor">
-    <div class="row">
-        <div class="col-12 floor_title">
-            <p class="p1">合作伙伴</p>
-            <p class="p_bottom"></p>
-            <p class="p2">PARTNER</p>
-        </div>
-
-    </div>
-    <div class="row product">
-        <a href="#" class="col-6 product_box product_left">
-            <div class="product-1">
-                <p class="desc">了解详情>></p>
-                <p class="title">硬件终端</p>
-                <p class="shart_title">支持“照片、文档打印+证件照制作”功能</p>
-
-            </div>
-        </a>
-        <a href="#" class="col-6 product_box product_right">
-            <div class="product-1">
-                <p class="desc">了解详情>></p>
-                <p class="title">硬件终端</p>
-                <p class="shart_title">支持“照片、文档打印+证件照制作”功能</p>
-
-            </div>
-
-        </a>
-    </div>
-</div>
-
 {/block}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

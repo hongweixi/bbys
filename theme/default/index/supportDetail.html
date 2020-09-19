@@ -1,0 +1,33 @@
+{extend name="../../../theme/default/base" /}
+
+{block name="css"}
+{/block}
+{block name="content"}
+<!--主体内容-->
+<div class="f_content ">
+    <div class="f_content_banner">
+        <img src="__PUBLIC__/Home/images/cpjs_head.png" alt="">
+        <div class="title center_row">
+            <h1>{$page.label}</h1>
+            <p>首页 > {$page.label}</p>
+        </div>
+    </div>
+    <div class="center_row supportDetail">
+        <h2 class="supportDetail_h2">{$info.post_title}</h2>
+        <p class="supportDetail_date">百步印社 | {$info.post_date}</p>
+        {$info.post_content}
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+$('.nav_left').click(function (){
+    $('.nav_left').removeClass('active');
+    $(this).addClass('active');
+    var nav_id = $(this).attr('nav_id');
+    $(".right_li").hide();
+    $(".right_li_"+nav_id).show();
+})
+</script>
+{/block}

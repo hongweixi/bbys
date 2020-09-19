@@ -26,18 +26,6 @@
                         <div class="box-body">
 
                             <div class="form-group">
-                                <label>{:lang('NAVIGATION_CATEGORY')} </label>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <select name="cid" class="form-control input-sm">
-                                            {volist name="navcats" id="vo"}
-                                            <option value="{$vo.navcid}">{$vo.name}</option>
-                                            {/volist}
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label>{:lang('PARENT')} </label>
                                 <div class="row">
                                     <div class="col-md-12">
@@ -57,20 +45,18 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>{:lang('HREF')} </label>
+                                <label>副标题</label>
                                 <div class="row">
-                                    <div class="col-md-12 radio" style="margin-left: 20px;">
-                                        <input type="radio" name="nav" id="outlink_radio">
-                                        <input type="text" name="href" id="outlink_input" value="http://" class="form-control input-sm">
-                                        <input type="radio" name="nav" id="selecturl_radio">
-                                        <select name="href" class="form-control input-sm">
-                                            <option value="{:base64_encode('home')}">{:lang('HOME')}</option>
-                                            {foreach name="navs" item="vo"}
-                                            <optgroup label="{$vo.name}">
-                                                {$vo.html}
-                                            </optgroup>
-                                            {/foreach}
-                                        </select>
+                                    <div class="col-md-12">
+                                        <input type="text" name="short_title" value="{$short_title}"  required class="form-control input-sm">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>链接 </label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="text" name="href" id="outlink_input" value="{$href}" class="form-control input-sm">
                                     </div>
                                 </div>
                             </div>

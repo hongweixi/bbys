@@ -53,13 +53,13 @@ class Category extends Admin
 
 
             $data=input("post.");
-            if(isset($data['external_href'])){
+            /*if(isset($data['external_href'])){
                 $data['href']=$data['external_href'];
                 unset($data['external_href']);
             }else{
                 $data['href']=base64_decode($data['href']);
                 unset($data['nav']);
-            }
+            }*/
 
             $result=db('nav')->insertGetId($data);
             if ($result!==false) {
@@ -80,7 +80,7 @@ class Category extends Admin
             }
         }
 
-        $cid=input('request.cid',0,'intval');
+        $cid=input('request.cid',1,'intval');
         $result = db('nav')->where(array('cid'=>$cid))->order(array("listorder" => "ASC"))->select();
         import('Tree');
         $tree = new \Tree();
@@ -174,13 +174,13 @@ class Category extends Admin
 
             $data=input("post.");
 
-            if(isset($data['external_href'])){
+            /*if(isset($data['external_href'])){
                 $data['href']=$data['external_href'] . '/cid/'.$data['id'];
                 unset($data['external_href']);
             }else{
                 $data['href']=base64_decode($data['href']);
                 unset($data['nav']);
-            }
+            }*/
             if (db('nav')->where('id', $_POST['id'])->update($data) !== false) {
                 cache("site_nav_".intval($data['cid']),null);
                 cache("site_nav_main",null);
@@ -190,7 +190,7 @@ class Category extends Admin
             }
         }
 
-        $cid=input('request.cid',0,'intval');;
+        $cid=input('request.cid',1,'intval');;
         $id=input("get.id",0,'intval');
         $result = db('nav')->where("cid=$cid and id!=$id")->order(array("listorder" => "ASC"))->select();
         import('Tree');
@@ -215,8 +215,8 @@ class Category extends Admin
         $this->assign("navcats",$cats);
 
         $nav=db('nav')->where(array('id'=>$id))->find();
-        $nav['hrefold']=$nav['href'];
-        $nav['href'] = base64_encode($nav['href']);
+//        $nav['hrefold']=$nav['href'];
+//        $nav['href'] = base64_encode($nav['href']);
 
         $this->assign($nav);
 

@@ -16,18 +16,15 @@
             <div class="m_head_left_ul">
                 <p><span class="icon_cross fr"></span></p>
                 {php}
-                    $mobileNav = sp_get_terms('where:parent=0;order:listorder desc');
+                $mobileNav = sp_get_terms('where:parentid=0;order:listorder asc');
                 {/php}
                 <ul>
-                    <a href="{:url('Home/index/index')}"> <li>首页</li></a>
-                    {foreach name="mobileNav" item="vo"}
-                        <if condition="$vo['term_id'] == 1">
-                            <a href="{:leuu('Home/Index/chamberList', array('id' => 26))}"><li>{$vo.name}</li></a>
-                            <else />
-                            <a href="{:leuu('Home/Index/newList', array('id' => $vo['term_id']))}"><li>{$vo.name}</li></a>
-                        </if>
+                    {foreach name="mobileNav" item="vo" key="k"}
+                        <a href="{:leuu($vo['href'])}"><li class="">{$vo.label}</li></a>
                     {/foreach}
                 </ul>
+
+
             </div>
 
             <!--移动端导航 end-->
@@ -45,12 +42,16 @@
                         <!-- PC端nav -->
                         <div class="head_nav">
                             <ul id="" class="fl">
-                                <li class="active"><a href="/">首&nbsp;&nbsp;&nbsp;页</a></li>
-                                <li class=""><a href="/">产品介绍</a></li>
-                                <li class=""><a href="/">商业合作</a></li>
-                                <li class=""><a href="/">应用案例</a></li>
-                                <li class=""><a href="/">下载中心</a></li>
-                                <li class=""><a href="/">关于我们</a></li>
+
+                                {foreach name="mobileNav" item="vo"}
+                                <li class="">
+                                    <a href="{:leuu($vo['href'])}"
+                                   {php}
+                                       echo isMenuActive($vo['href']);
+                                    {/php}
+                                    >{$vo.label}</a>
+                                </li>
+                                {/foreach}
                             </ul>
                         </div>
                             <!--<?php
